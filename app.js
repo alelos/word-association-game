@@ -80,12 +80,12 @@ function checkAnswer(questionBox,questionButton, option, optionIndex, correctAns
     if (optionIndex === correctAnswer) {
         score++
         scoreDisplay.textContent = score
-        addResult(questionBox, 'Correct!') 
+        addResult(questionBox, 'Correct!','correct') 
     }
     else {
         score--
         scoreDisplay.textContent = score
-        addResult(questionBox, 'Wrong!') 
+        addResult(questionBox, 'Wrong!', 'wrong') 
     }
     clicked.push(option)
     questionButton.disabled = clicked.includes(option)
