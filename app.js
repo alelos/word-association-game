@@ -30,6 +30,7 @@ const questions = [
 ]
 
 let score = 0
+let clicked = []
 scoreDisplay.textContent = score;
 
 function populateQuestions() {
@@ -41,28 +42,59 @@ function populateQuestions() {
         logoDisplay.textContent = "🍀"
         questionBox.append(logoDisplay)
 
-        question.quiz.forEach(tip => {
+        question.quiz.forEach((tip) => {
             const tipText = document.createElement('p')
             tipText.textContent = tip
             questionBox.append(tipText)
         })
 
-        const questionBtn = document.createElement('div')
-        questionBtn.classList.add('question-btn')
-        questionBox.append(questionBtn)
+        const questionButtons = document.createElement('button')
+        questionButtons.classList.add('question-buttons')
+        questionBox.append(questionButtons)
 
-         question.option.forEach(option => {
+        question.option.forEach((option, optionIndex) => {
             const questionButton = document.createElement('button')
             questionButton.classList.add('question-button')
             questionButton.textContent = option
-            questionBtn.append(questionButton)
+            questionButtons.append(questionButton)
+
+            questionButton.addEventListener('click', () => checkAnswer(questionBox,questionButton, option, optionIndex + 1, question.correct))
         })
 
+        const displayAnswer = document.createElement('div')
+        displayAnswer.classList.add('display-answer')
 
-
+        questionBox.append(displayAnswer)
         questionDisplay.append(questionBox)
 
 
     })
 }
 populateQuestions()
+
+function checkAnswer(questionBox,questionButton, option, optionIndex, correctAnswer)
+{
+    console.log('OPTION', option)
+    console.log(optionIndex)
+
+    if (optionIndex === correctAnswer) {
+        score++
+        scoreDisplay.textContent = score
+        addResult(questionBox, 'Correct!') 
+    }
+    else {
+        score--
+        scoreDisplay.textContent = score
+        addResult(questionBox, 'Wrong!') 
+    }
+    clicked.push(option)
+    questionButton.disabled = clicked.includes(option)
+} 
+
+function addResult( questionBox,answer,className) {
+  const displayAnwer =  questionBox.querySelector('.display-answer')
+  displayAnwer.classList.remove('wrong')
+  displayAnwer.classList.remove('correct')
+  displayAnwer.classList.add(className)
+  displayAnwer.textContent = answer
+}
